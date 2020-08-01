@@ -371,7 +371,7 @@ class MultiHeadBlockSelf(nn.Module):
                                                                                                                  2).contiguous().view(
             -1, source_size, self.n_hidden // 2)
 
-        similarities = F.softmax(question_query.bmm(answer_key.transpose(2, 1)).masked_fill(mask, -np.inf), -1)
+        similarities = F.softmax(question_query.bmm(answer_key.transpose(2, 1)).masked_fill(mask.bool(), -np.inf), -1)
 
         value_representation = similarities.bmm(answer_value).view(batch_size, self.n_head, source_size,
                                                                    self.n_hidden // 2).transpose(1,
