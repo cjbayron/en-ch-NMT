@@ -119,5 +119,8 @@ def get_att_output(tensor, att_module):
 
 def get_model(filename):
     with open(filename, 'rb') as f:
-        model = torch.load(f)
+        if torch.cuda.is_available():
+            model = torch.load(f)
+        else:
+            model = torch.load(f, map_location=torch.device("cpu"))
     return model
